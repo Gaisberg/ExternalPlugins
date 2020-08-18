@@ -11,5 +11,7 @@ public interface ClickComparable
 
 	boolean isClickValid(MenuEntry event);
 
+	boolean isClickValid(OneClickPlugin plugin, MenuEntry event);
+
 	void modifyClick(OneClickPlugin plugin, MenuEntry event);
 }

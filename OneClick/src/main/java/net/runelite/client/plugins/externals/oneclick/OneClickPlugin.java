@@ -18,14 +18,15 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import static net.runelite.api.MenuOpcode.MENU_ACTION_DEPRIORITIZE_OFFSET;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.MenuEntry;
-import net.runelite.api.MenuOpcode;
-import static net.runelite.api.MenuOpcode.MENU_ACTION_DEPRIORITIZE_OFFSET;
-import net.runelite.api.Skill;
 import net.runelite.api.SpriteID;
+import net.runelite.api.Skill;
 import net.runelite.api.Varbits;
+import net.runelite.api.MenuOpcode;
+import net.runelite.api.ItemDefinition;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
@@ -43,6 +44,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginType;
 import net.runelite.client.plugins.externals.oneclick.Comparables.Blank;
 import net.runelite.client.plugins.externals.oneclick.Comparables.ClickComparable;
+import net.runelite.client.plugins.externals.utils.ExtUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.pf4j.Extension;
 
@@ -72,6 +74,9 @@ public class OneClickPlugin extends Plugin
 	@Inject
 	@Setter(AccessLevel.NONE)
 	private OneClickConfig config;
+
+	@Inject
+	private ExtUtils utils;
 
 	private final Map<Integer, String> targetMap = new HashMap<>();
 	private final Map<Integer, List<Integer>> customClickMap = new HashMap<>();
@@ -458,6 +463,11 @@ public class OneClickPlugin extends Plugin
 		{
 			comparable.modifyClick(this, event);
 		}
+
+		if (comparable.isClickValid(this, event))
+		{
+			comparable.modifyClick(this, event);
+		}
 	}
 
 	public boolean updateSelectedItem(int id)
@@ -504,6 +514,23 @@ public class OneClickPlugin extends Plugin
 	}
 
 	public Pair<Integer, Integer> findItem(Collection<Integer> ids)
+{
+	final Widget inventoryWidget = client.getWidget(WidgetInfo.INVENTORY);
+	final List<WidgetItem> itemList = (List<WidgetItem>) inventoryWidget.getWidgetItems();
+
+	for (int i = itemList.size() - 1; i >= 0; i--)
+	{
+		final WidgetItem item = itemList.get(i);
+		if (ids.contains(item.getId()))
+		{
+			return Pair.of(item.getId(), item.getIndex());
+		}
+	}
+
+	return Pair.of(-1, -1);
+}
+
+	public String findItemString(Collection<Integer> ids)
 	{
 		final Widget inventoryWidget = client.getWidget(WidgetInfo.INVENTORY);
 		final List<WidgetItem> itemList = (List<WidgetItem>) inventoryWidget.getWidgetItems();
@@ -513,11 +540,11 @@ public class OneClickPlugin extends Plugin
 			final WidgetItem item = itemList.get(i);
 			if (ids.contains(item.getId()))
 			{
-				return Pair.of(item.getId(), item.getIndex());
+				ItemDefinition def = client.getItemDefinition(item.getId());
+				return def.getName();
 			}
 		}
-
-		return Pair.of(-1, -1);
+		return "nothing";
 	}
 
 	private void updateMap()

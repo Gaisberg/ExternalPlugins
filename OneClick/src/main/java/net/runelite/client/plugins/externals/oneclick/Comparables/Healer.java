@@ -53,6 +53,13 @@ public class Healer implements ClickComparable
 	}
 
 	@Override
+	public boolean isClickValid(OneClickPlugin plugin, MenuEntry event)
+	{
+		//Not yet implemented
+		return false;
+	}
+
+	@Override
 	public void modifyClick(OneClickPlugin plugin, MenuEntry event)
 	{
 		if (event.getTarget().equalsIgnoreCase("<col=ff9040>Food<col=ffffff> -> <col=ffff00>Penance Healer"))

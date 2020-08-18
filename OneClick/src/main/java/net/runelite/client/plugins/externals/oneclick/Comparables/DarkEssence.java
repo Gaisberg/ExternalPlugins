@@ -34,6 +34,13 @@ public class DarkEssence implements ClickComparable
 	}
 
 	@Override
+	public boolean isClickValid(OneClickPlugin plugin, MenuEntry event)
+	{
+		//Not yet implemented
+		return false;
+	}
+
+	@Override
 	public void modifyClick(OneClickPlugin plugin, MenuEntry event)
 	{
 		if (plugin.updateSelectedItem(ItemID.DARK_ESSENCE_BLOCK))

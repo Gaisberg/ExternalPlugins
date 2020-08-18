@@ -56,6 +56,13 @@ public class Spell implements ClickComparable
 	}
 
 	@Override
+	public boolean isClickValid(OneClickPlugin plugin, MenuEntry event)
+	{
+		//Not yet implemented
+		return false;
+	}
+
+	@Override
 	public void modifyClick(OneClickPlugin plugin, MenuEntry event)
 	{
 		if (cast.test(event))

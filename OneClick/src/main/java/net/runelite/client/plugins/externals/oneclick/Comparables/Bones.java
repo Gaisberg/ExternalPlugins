@@ -1,15 +1,14 @@
 package net.runelite.client.plugins.externals.oneclick.Comparables;
 
-import com.google.common.collect.ImmutableSet;
-import java.util.Set;
 import net.runelite.api.ItemID;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.MenuOpcode;
 import net.runelite.client.plugins.externals.oneclick.OneClickPlugin;
+import java.util.Set;
 
 public class Bones implements ClickComparable
 {
-	private static final Set<Integer> BONE_SET = ImmutableSet.of(
+	private static final Set<Integer> BONE_SET = Set.of(
 		ItemID.BONES, ItemID.WOLF_BONE, ItemID.BURNT_BONES, ItemID.MONKEY_BONES, ItemID.BAT_BONES,
 		ItemID.JOGRE_BONE, ItemID.BIG_BONES, ItemID.ZOGRE_BONE, ItemID.SHAIKAHAN_BONES, ItemID.BABYDRAGON_BONES,
 		ItemID.WYRM_BONES, ItemID.DRAGON_BONES, ItemID.DRAKE_BONES, ItemID.FAYRG_BONES, ItemID.LAVA_DRAGON_BONES,
@@ -43,6 +42,13 @@ public class Bones implements ClickComparable
 		return event.getOpcode() == MenuOpcode.GAME_OBJECT_FIRST_OPTION.getId() &&
 			event.getTarget().contains("<col=ff9040>Bones<col=ffffff> -> ") &&
 			event.getTarget().toLowerCase().contains("altar");
+	}
+
+	@Override
+	public boolean isClickValid(OneClickPlugin plugin, MenuEntry event)
+	{
+		//Not yet implemented
+		return false;
 	}
 
 	@Override

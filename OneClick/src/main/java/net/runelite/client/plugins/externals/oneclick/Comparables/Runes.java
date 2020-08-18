@@ -52,6 +52,13 @@ public class Runes implements ClickComparable
 	}
 
 	@Override
+	public boolean isClickValid(OneClickPlugin plugin, MenuEntry event)
+	{
+		//Not yet implemented
+		return false;
+	}
+
+	@Override
 	public void modifyClick(OneClickPlugin plugin, MenuEntry event)
 	{
 		if (event.getTarget().equals(rune))
